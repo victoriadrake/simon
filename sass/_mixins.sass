@@ -1,0 +1,37 @@
+=top-sticky
+    z-index: 100
+    position: sticky
+    top: 0
+
+=bottom-sticky
+    z-index: 100
+    position: fixed
+    bottom: 0
+
+=ease
+    transition: $time ease
+
+=orb($color, $size)
+    $orb_base_color: ($color)
+
+    background: $orb_base_color
+    border-radius: 50%
+    box-shadow: inset -5px -10px 1px darken($orb_base_color, 5%)
+    height: $size
+    text-align: center
+    width: $size
+    z-index: 200
+    transition: 0.5s ease
+
+    // Orb shadow
+    &:after
+        background: rgba($color, 0.3)
+        border-radius: 50%
+        content: ""
+        display: block
+        height: ($size) / 6
+        position: relative
+        margin: 0 auto
+        bottom: -$size - 40px
+        width: ($size) / 1.5
+        transition: 0.5s ease

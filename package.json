@@ -1,0 +1,20 @@
+{
+    "name": "simon",
+    "version": "1.0.0",
+    "description": "simon",
+    "main": "gulpfile.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Vicky Lai",
+    "license": "ISC",
+    "devDependencies": {
+      "critical": "^0.9.1",
+      "gulp": "^3.9.1",
+      "gulp-autoprefixer": "^4.0.0",
+      "gulp-pug": "^3.3.0",
+      "gulp-sass": "^3.1.0",
+      "gulp-util": "^3.0.8"
+    }
+  }
+  
