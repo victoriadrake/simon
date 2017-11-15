@@ -31,25 +31,7 @@ function getInput() {
     $('.orb').click(function (event) {
         var input = parseInt($(this).attr('value'));
         console.log('input = ' + input);
-        return input;
-    })
-}
-
-function userInput() {
-    return new Promise(resolve => {
-        console.log('Do something?');
-        $('.orb').click(function (event) {
-            var input = parseInt($(this).attr('value'));
-            console.log('input = ' + input);
-            return input;
-        })
-        resolve();
     });
-}
-
-async function play() {
-    const a = await userInput();
-    return a;
 }
 
 // Called in game for loop where step is i, click target is input
@@ -67,14 +49,17 @@ function response(verdict) {
     }
 }
 
+const play = async () => {
+    console.log(await getInput());
+    return "done";
+}
+
 // Page loaded
 $(document).ready(function () {
     console.log('Want to play a game?');
     // make game, intro
     // strict is true or false
 
-play(). then(v => {
-    console.log('Play on');
-});
+    play();
 
 });
