@@ -19,7 +19,6 @@ body
     flex-direction: column
     justify-content: space-between
     align-items: center
-    border: 1px solid $white
 
 .strong
     font-weight: 700
@@ -51,23 +50,35 @@ body
     +orb($green, $floor_width / 8)
     &:hover
         transform: translateY(-20px)
+        &:after
+            transform: translateY(20px)
+            width: ($floor_width / 8) / 1.75
 
 #orb2
     +orb($red, $floor_width / 11)
     transform: translateY(-100px)
     &:hover
         transform: translateY(-120px)
+        &:after
+            bottom: -150px
+            width: ($floor_width / 11) / 1.75
 
 #orb3
     +orb($yellow, $floor_width / 10)
     transform: translateY(-60px)
     &:hover
         transform: translateY(-80px)
+        &:after
+            bottom: -160px
+            width: ($floor_width / 10) / 1.75
 
 #orb4
     +orb($blue, $floor_width / 8)
     &:hover
         transform: translateY(-20px)
+        &:after
+            transform: translateY(20px)
+            width: ($floor_width / 8) / 1.75
 
 .messages
     height: 20vh
