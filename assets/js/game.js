@@ -19,47 +19,54 @@ function makeGame() {
         game.push(v);
     }
     return game;
-}
-// 👍 console.log(makeGame());
+} // 👍 console.log(makeGame());
 
-function simonSays() {
-    $('#orb' + game[step]).addClass() // Hover state?
+function simonSays(which) {
+    $('#orb' + which).addClass('notice');
+    setTimeout(() => {
+        $('#orb' + which).removeClass('notice');
+    }, 350);
+} // 👍
+
+
+function dontGetInput() { // no listener for you
+    $('.orb').off("click");
 }
 
-function getInput() {
+function getInput(step) { // adds event listener
     // Get value of clicked orb
     $('.orb').click(function (event) {
         var input = parseInt($(this).attr('value'));
+        // Log value
         console.log('input = ' + input);
+        compare(step, input)
     });
 }
 
 // Called in game for loop where step is i, click target is input
 function compare(step, input) {
-    var verdict = game[step] === input;
-    return verdict;
-}
+    var verdict = step === input;
 
-function response(verdict) {
     if (verdict) {
         console.log('Good human.');
     }
     else {
         console.log('Bad human.');
+        dontGetInput();
     }
-}
-
-const play = async () => {
-    console.log(await getInput());
-    return "done";
 }
 
 // Page loaded
 $(document).ready(function () {
     console.log('Want to play a game?');
     // make game, intro
+    makeGame();
     // strict is true or false
 
-    play();
+    for (var i = 0; i < 1; i++) {
+        console.log(game[i]);
+        simonSays(game[i]);
+        getInput(game[i]);
+    }
 
 });

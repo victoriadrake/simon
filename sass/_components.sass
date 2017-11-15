@@ -45,7 +45,7 @@ body
 
 #orb1
     +orb($green, $floor_width / 8)
-    &:hover
+    &:hover, &.notice
         transform: translateY(-20px)
         &:after
             transform: translateY(20px)
@@ -54,7 +54,7 @@ body
 #orb2
     +orb($red, $floor_width / 11)
     transform: translateY(-100px)
-    &:hover
+    &:hover, &.notice
         transform: translateY(-120px)
         &:after
             bottom: -150px
@@ -63,7 +63,7 @@ body
 #orb3
     +orb($yellow, $floor_width / 10)
     transform: translateY(-60px)
-    &:hover
+    &:hover, &.notice
         transform: translateY(-80px)
         &:after
             bottom: -160px
@@ -71,7 +71,7 @@ body
 
 #orb4
     +orb($blue, $floor_width / 8)
-    &:hover
+    &:hover, &.notice
         transform: translateY(-20px)
         &:after
             transform: translateY(20px)
