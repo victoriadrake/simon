@@ -24,13 +24,13 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script type="text/javascript" src="assets/js/game.js"></script>
 
 </head>
 
 <body>
+    <div class="replay hide">Replay</div>
     <div class="wrapper">
         <div class=""></div>
         <div id="floor">
@@ -40,9 +40,12 @@
             <div class="orb blue" id="orb4" value="4"></div>
         </div>
         <div class="messages">
-            <div id="message">Simon: Hello there.</div>
+            <div id="message">Simon: Greetings, traveler.</div>
             <div class="controls">
                 <button id="start">Start</button>
+                <button class="stage">Stage:
+                    <span id="stage"></span>
+                </button>
                 <button id="mode">Normal Mode</button>
             </div>
         </div>

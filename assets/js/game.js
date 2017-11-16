@@ -13,6 +13,25 @@ var sounds = {
     blue: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3')
 };
 
+function intro() {
+    $('#message').html('Four mysterious floating orbs have appeared!');
+    setTimeout(() => {
+        $('#message').html('From all around you, a voice is heard...')
+    }, 2000);
+    setTimeout(() => {
+        $('#message').html('Simon: Greetings, traveler. I am Simon, a highly advanced artificial intelligence written in Clojure. I am the keeper of this gateway.')
+    }, 4000);
+    setTimeout(() => {
+        $('#message').html('To pass, you must first prove yourself worthy by accepting my challenge! It is a formidable test of skills based on a children\'s toy from the ancient era known only as "the eighties."')
+    }, 7000);
+    setTimeout(() => {
+        $('#message').html('Simon: Follow the sequence of the orbs. Master twenty steps and you shall pass; fail and you risk certain doom!')
+    }, 10000);
+    setTimeout(() => {
+        $('.controls').css('opacity','1');
+    }, 13000);
+}
+
 function noticeMe(orb) {
     $('#orb' + orb).addClass('notice');
     switch (orb) {
@@ -32,7 +51,7 @@ var simon = {
         game.values.push(Math.ceil(Math.random() * 4));
         console.log('game: ' + game.values);
         game.stage++;
-        // show game stage
+        $('#stage').html(game.stage);
     },
     playSimon: function () { // could add no-click here?
         var v = 0;
@@ -65,6 +84,7 @@ var player = {
             if (player.step >= player.total) {
                 game.setState(player);
                 console.log('Good human.');
+                $('#message').html('Simon: Good.');
             }
         }
         else {
@@ -73,20 +93,43 @@ var player = {
     }
 };
 
-/* var mode = {
+var setMode = {
     normal: function () {
-        // normal mode
+        game.mode = 'normal';
+        $('#mode').html('Normal Mode');
+        $('.wrapper').removeClass('strict');
     },
-    strict: function() {
-        $('.wrapper').addClass('strict');
+    strict: function () {
+        game.mode = 'strict';
+        $('#mode').html('Strict Mode');
+        $('.wrapper').addClass('strict-flash');
+        setTimeout(() => {
+            $('.wrapper').removeClass('strict-flash');
+            $('.wrapper').addClass('strict');
+        }, 35);
     },
     nuke: function () {
         console.log('Kill with fire!');
+        $('#floor').addClass('quake');
+        setTimeout(() => {
+            $('#floor').removeClass('quake');
+            $('.controls').addClass('dim');
+            $('.wrapper').addClass('nuke-flash');
+        }, 2000);
+        setTimeout(() => {
+            $('#floor').addClass('empty');
+            $('.wrapper').removeClass('nuke-flash');
+            $('.wrapper').removeClass('strict');
+            $('#message').html('Simon: ...');
+        }, 2750);
+        setTimeout(() => {
+            $('.replay').css('display','block');
+        }, 4000);
         // jQuery, css stuff
         // show option to game.start()
     },
 }
- */
+
 var game = {
     state: simon,
     values: [],
@@ -95,30 +138,24 @@ var game = {
     reset: function () {
         game.stage = 0;
         game.state = simon;
+        if (game.mode == 'normal'){
+            setMode.normal()
+        }
+        if (game.mode == 'strict') {
+            setMode.strict();
+        }
         game.values = [];
-        // show game stage
+        $('#stage').html(game.stage);
     },
     start: function () {
-        console.log('Let us begin.');
+        $('#floor').removeClass('empty');
+        $('.controls').removeClass('dim');
+        $('.replay').css('display','none');
+        $('#message').html('Simon: Let us begin.');
         game.reset();
         $('.orb').addClass('no-click');
         simon.simonSays();
         simon.playSimon();
-    },
-    nuke: function () {
-        console.log('Kill with fire!');
-        $('#floor').addClass('quake');
-        setTimeout(() => {
-            $('#floor').removeClass('quake');
-            $('.wrapper').addClass('nuke-flash');
-        }, 2000);
-        setTimeout(() => {
-            $('.wrapper').removeClass('nuke-flash');
-            $('.wrapper').removeClass('strict');
-            $('#floor').addClass('empty');
-        }, 2750);
-        // jQuery, css stuff
-        // show option to game.start()
     },
     setState: function (state) {
         if (state.name == 'simon') {
@@ -140,16 +177,23 @@ var game = {
     },
     lose: function () {
         if (game.mode == 'strict') {
-            game.nuke();
+            $('#message').html('Simon: And I was just starting to like you...');
+            setMode.nuke();
         }
         else {
             game.state = simon;
             console.log('Bad human.');
+            $('#message').html('Simon: Try again.');
             $('.orb').addClass('no-click');
-            setTimeout(simon.playSimon, 500);
+            $('#floor').addClass('quake');
+            setTimeout(() => {
+                $('#floor').removeClass('quake');
+                simon.playSimon();
+            }, 400);
         }
     },
     win: function () {
+        $('#message').html('Simon: Well done, brave human.');
         // jQuery, css stuff
         // show option to game.start()
     }
@@ -158,9 +202,11 @@ var game = {
 // Page loaded
 $(document).ready(function () {
     Object.keys(sounds).forEach(key => {
-        console.log('loaded sound: ' + key);
         sounds[key].load();
     });
+
+    $('.controls').css('opacity','0');
+    intro();
 
     $('.orb').click(function (event) {
         var orb = parseInt($(this).attr('value'));
@@ -178,25 +224,20 @@ $(document).ready(function () {
 
     $('#start').click(function () {
         game.start();
+        $('#start').html('Restart');
     });
+
+    $('.replay').click(function() {
+        game.start();
+    })
 
     $('#mode').click(function () {
         if (game.mode == 'normal') {
-            game.mode = 'strict';
-            $('#mode').html('Strict Mode');
-            $('.wrapper').addClass('strict-flash');
-            setTimeout(() => {
-                $('.wrapper').removeClass('strict-flash');
-                $('.wrapper').addClass('strict');
-            }, 35);
+            setMode.strict();
             console.log('mode: ' + game.mode);
-            // Show mode
         }
         else {
-            game.mode = 'normal';
-            // Show mode
-            $('#mode').html('Normal Mode');
-            $('.wrapper').removeClass('strict', 1000, 'linear'); // no transition?
+            setMode.normal();
             console.log('mode: ' + game.mode);
         }
     });
