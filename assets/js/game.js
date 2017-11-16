@@ -18,21 +18,20 @@ var strict = false;
 
 // Generate game array
 function makeGame() {
-    for (var i = 0; i <= 20; i++) {
-        var v = Math.ceil(Math.random() * 4);
-        game.push(v);
-    }
+    var v = Math.ceil(Math.random() * 4);
+    game.push(v);
     console.log(game);
     return game;
 }
 
-function simonSays(sequence) {
-    for (var i=0; i<sequence.length; i++) {
-    console.log('Which orb: ' + sequence[i]);
-    $('#orb' + which).addClass('notice');
-    setTimeout(() => {
-        $('#orb' + which).removeClass('notice');
-    }, 350);
+function simonSays(game) {
+    for (var i = 0; i < game.length; i++) {
+        console.log('Which orb: ' + game[i]);
+        let orb = game[i];
+        $('#orb' + orb).addClass('notice');
+        setTimeout(() => {
+            $('#orb' + orb).removeClass('notice');
+        }, 350);
     }
 } // 👍
 
@@ -44,14 +43,17 @@ function dontGetInput() { // no listener for you
     $('.orb').off("click");
 }
 
-function getInput(orb) {
-        // Get value of clicked orb
+function getInput(game) {
+    for (var v = 0; v < game.length; v++) { // For each val in game sequence, turn on handler
         $('.orb').click(function (event) { // Click drives gameplay
             var input = parseInt($(this).attr('value'));
             // Log value
             console.log('input = ' + input);
-            compare(orb, input);
+            compare(orb, input, game);
         });
+    }
+    makeGame();
+    console.log('game length: ' + game.length);
 }
 
 // Called in game for loop where step is i, click target is input
@@ -65,6 +67,7 @@ function compare(orb, input) {
         dontGetInput();
         // Feedback
         console.log('Bad human.');
+        simonSays(game);
     }
     if (verdict) {
         console.log('Good human.');
@@ -72,11 +75,9 @@ function compare(orb, input) {
 }
 
 // One step
-function play(step) {
-    console.log('step: ' + step);
-    console.log('orb: ' + game[step]);
-    simonSays(game[step]);
-    getInput(game[step]);
+function play(game) {
+    simonSays(game); // Show sequence
+    getInput(game); // Turn on click handler, passing in var for later
 }
 
 // Page loaded
