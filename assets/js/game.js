@@ -13,23 +13,16 @@ var sounds = {
     blue: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3')
 };
 
+var msg = {
+        1: 'Four mysterious floating orbs have appeared!',
+        2: 'From all around you, a voice is heard...',
+        3: 'Simon: Greetings, traveler. I am Simon, a highly advanced artificial intelligence written in Clojure. I am the keeper of this gateway.',
+        4: 'To pass, you must first prove yourself worthy by accepting my challenge! It is a formidable test of skills based on a children\'s toy from the ancient era known only as "the eighties."',
+        5: 'Simon: Follow the sequence of the orbs. Master twenty steps and you shall pass; fail and you risk certain doom!',
+}
+
 function intro() {
-    $('#message').html('Four mysterious floating orbs have appeared!');
-    setTimeout(() => {
-        $('#message').html('From all around you, a voice is heard...')
-    }, 2000);
-    setTimeout(() => {
-        $('#message').html('Simon: Greetings, traveler. I am Simon, a highly advanced artificial intelligence written in Clojure. I am the keeper of this gateway.')
-    }, 4000);
-    setTimeout(() => {
-        $('#message').html('To pass, you must first prove yourself worthy by accepting my challenge! It is a formidable test of skills based on a children\'s toy from the ancient era known only as "the eighties."')
-    }, 7000);
-    setTimeout(() => {
-        $('#message').html('Simon: Follow the sequence of the orbs. Master twenty steps and you shall pass; fail and you risk certain doom!')
-    }, 10000);
-    setTimeout(() => {
-        $('.controls').css('opacity','1');
-    }, 13000);
+    $('#message').html(msg[1]); // click to advance
 }
 
 function noticeMe(orb) {
