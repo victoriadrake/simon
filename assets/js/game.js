@@ -53,36 +53,37 @@ function compare(a, b) {
         nuke();
     }
     if ((a != b) && (strict == false)) {
-        console.log('Bad human.', a, b);
-        simonSays(game.slice(0, click));
+        console.log('Bad human.', 'input = '+a, 'simon = '+b);
+        simonSays(game.slice(0, turn));
         return;
     }
     if ((a === b) && (click === game.slice(0, turn).length)) {
-        console.log('Good human.');
+        console.log('Good human.', 'input = '+a, 'simon = '+b);
         console.log('That all.');
         click = 0;
         simonSays(game.slice(0, turn + 1));
-        takeInput(0);
+        takeInput(click);
     }
     if (a === b) {
+        //takeInput(step + 1);
         return;
     }
 }
 
 // Receive player input
-function takeInput(pie) {
+function takeInput(step) {
     turn++;
-    click++;
-    console.log('pie: ' + pie)
+    console.log('add handler');
     // Add click handler...
     $('.orb').click(function (event) {
+        click++;
         // When clicked...
         var input = parseInt($(this).attr('value'));
         console.log('input = ' + input);
 
         // Drive game
-        compare(input, game[pie]);
-        takeInput(pie + 1);
+        compare(input, game[step]);
+        takeInput(step + 1);
 
     })
 }
