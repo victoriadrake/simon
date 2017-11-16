@@ -47,6 +47,7 @@ body
     +orb($green, $floor_width / 8)
     &:hover, &.notice
         transform: translateY(-20px)
+        box-shadow: 0px 0px 40px $green
         &:after
             transform: translateY(20px)
             width: ($floor_width / 8) / 1.75
@@ -56,6 +57,7 @@ body
     transform: translateY(-100px)
     &:hover, &.notice
         transform: translateY(-120px)
+        box-shadow: 0px 0px 30px $red
         &:after
             bottom: -150px
             width: ($floor_width / 11) / 1.75
@@ -65,6 +67,7 @@ body
     transform: translateY(-60px)
     &:hover, &.notice
         transform: translateY(-80px)
+        box-shadow: 0px 0px 30px $yellow
         &:after
             bottom: -160px
             width: ($floor_width / 10) / 1.75
@@ -73,6 +76,7 @@ body
     +orb($blue, $floor_width / 8)
     &:hover, &.notice
         transform: translateY(-20px)
+        box-shadow: 0px 0px 40px $blue
         &:after
             transform: translateY(20px)
             width: ($floor_width / 8) / 1.75
@@ -81,6 +85,6 @@ body
     height: 20vh
     width: 100%
     padding: 2rem
-    box-shadow: -8px -8px 0px $green, 8px 8px 0px $green, -8px 8px 0px $green, 8px -8px 0px $green, -12px -12px 0px $white, 12px 12px 0px $white, -12px 12px 0px $white, 12px -12px 0px $white
+    box-shadow: -8px -8px 0px darken($green, 5%), 8px 8px 0px darken($green, 5%), -8px 8px 0px darken($green, 5%), 8px -8px 0px darken($green, 5%), -12px -12px 0px darken($blue, 5%), 12px 12px 0px darken($blue, 5%), -12px 12px 0px darken($blue, 5%), 12px -12px 0px darken($blue, 5%)
     border-radius: 10px
-    background: darken($green, 25%)
+    background-image: linear-gradient(to bottom, $blue 0%, darken($blue, 35%) 100%)
