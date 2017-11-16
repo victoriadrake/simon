@@ -14,79 +14,91 @@ nuke:
 */
 
 // Globals
-var strict = false;
+var game = [],
+    player = [],
+    strict = false,
+    click = 0,
+    turn = 0;
 
-// Generate game array
 function makeGame() {
-    var v = Math.ceil(Math.random() * 4);
-    game.push(v);
-    console.log(game);
-    return game;
-}
-
-function simonSays(game) {
-    for (var i = 0; i < game.length; i++) {
-        console.log('Which orb: ' + game[i]);
-        let orb = game[i];
-        $('#orb' + orb).addClass('notice');
-        setTimeout(() => {
-            $('#orb' + orb).removeClass('notice');
-        }, 350);
+    for (var i = 0; i < 20; i++) {
+        var v = Math.ceil(Math.random() * 4);
+        game.push(v);
     }
-} // 👍
+    console.log(game);
+}
 
 function nuke() {
     console.log("Kill with fire.");
 }
 
-function dontGetInput() { // no listener for you
-    $('.orb').off("click");
+// Flash Simon's sequence
+function simonSays(orange) {
+    console.log('simon says: ' + orange);
+    return new Promise(function (resolve) {
+        for (var i of orange) {
+            let orb = i;
+            $('#orb' + orb).addClass('notice');
+            setTimeout(() => {
+                $('#orb' + orb).removeClass('notice');
+            }, 350);
+        };
+        resolve;
+    })
 }
 
-function getInput(game) {
-    for (var v = 0; v < game.length; v++) { // For each val in game sequence, turn on handler
-        $('.orb').click(function (event) { // Click drives gameplay
-            var input = parseInt($(this).attr('value'));
-            // Log value
-            console.log('input = ' + input);
-            compare(orb, input, game);
-        });
-    }
-    makeGame();
-    console.log('game length: ' + game.length);
-}
-
-// Called in game for loop where step is i, click target is input
-function compare(orb, input) {
-    var verdict = orb === input;
-    console.log('verdict: ' + verdict);
-    if (verdict === false && strict) {
+// See if player input is correct and dole out results
+function compare(a, b) {
+    if ((a != b) && (strict)) {
         nuke();
     }
-    if (verdict === false && strict === false) {
-        dontGetInput();
-        // Feedback
-        console.log('Bad human.');
-        simonSays(game);
+    if ((a != b) && (strict == false)) {
+        console.log('Bad human.', a, b);
+        simonSays(game.slice(0, click));
+        return;
     }
-    if (verdict) {
+    if ((a === b) && (click === game.slice(0, turn).length)) {
         console.log('Good human.');
+        console.log('That all.');
+        click = 0;
+        simonSays(game.slice(0, turn + 1));
+        takeInput(0);
+    }
+    if (a === b) {
+        return;
     }
 }
 
-// One step
-function play(game) {
-    simonSays(game); // Show sequence
-    getInput(game); // Turn on click handler, passing in var for later
+// Receive player input
+function takeInput(pie) {
+    turn++;
+    click++;
+    console.log('pie: ' + pie)
+    // Add click handler...
+    $('.orb').click(function (event) {
+        // When clicked...
+        var input = parseInt($(this).attr('value'));
+        console.log('input = ' + input);
+
+        // Drive game
+        compare(input, game[pie]);
+        takeInput(pie + 1);
+
+    })
+}
+
+// 👍
+
+function play(turn) {
+    simonSays(game.slice(0, turn + 1));
+    takeInput(0);
 }
 
 // Page loaded
 $(document).ready(function () {
     console.log('Want to play a game?');
-    // make game, intro
+
     makeGame();
-    // strict is true or false
-
-
+    play(click);
 
 });
