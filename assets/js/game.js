@@ -1,105 +1,203 @@
 /*
 SIMON
-onload():
-- generate game array
-- play intro function - user chooses strict or normal
-
-click():
-- input drives gameplay for loop
-
 nuke:
 - rumble effect
 - emanating glow to white screen
 - "Oh no..."
 */
 
-// Globals
-var game = [],
-    player = [],
-    strict = false,
-    click = 0,
-    turn = 0;
+var sounds = {
+    red: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'),
+    green: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
+    yellow: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3'),
+    blue: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3')
+};
 
-function makeGame() {
-    for (var i = 0; i < 20; i++) {
-        var v = Math.ceil(Math.random() * 4);
-        game.push(v);
+function noticeMe(orb) {
+    $('#orb' + orb).addClass('notice');
+    switch (orb) {
+        case 1: sounds.red.play(); break;
+        case 2: sounds.green.play(); break;
+        case 3: sounds.yellow.play(); break;
+        case 4: sounds.blue.play(); break;
     }
-    console.log(game);
+    setTimeout(() => {
+        $('#orb' + orb).removeClass('notice');
+    }, 350);
 }
 
-function nuke() {
-    console.log("Kill with fire.");
-}
-
-// Flash Simon's sequence
-function simonSays(orange) {
-    console.log('simon says: ' + orange);
-    return new Promise(function (resolve) {
-        for (var i of orange) {
-            let orb = i;
-            $('#orb' + orb).addClass('notice');
-            setTimeout(() => {
-                $('#orb' + orb).removeClass('notice');
-            }, 350);
-        };
-        resolve;
-    })
-}
-
-// See if player input is correct and dole out results
-function compare(a, b) {
-    if ((a != b) && (strict)) {
-        nuke();
+var simon = {
+    name: 'simon',
+    simonSays: function () {
+        game.values.push(Math.ceil(Math.random() * 4));
+        console.log('game: ' + game.values);
+        game.stage++;
+        // show game stage
+    },
+    playSimon: function () { // could add no-click here?
+        var v = 0;
+        var t = setInterval(function () {
+            noticeMe(game.values[v]);
+            if (v >= game.values.length - 1) { // do I need -1?
+                clearInterval(t);
+                game.setState(simon);
+            }
+            else {
+                v++;
+            }
+        }, 500)
     }
-    if ((a != b) && (strict == false)) {
-        console.log('Bad human.', 'input = '+a, 'simon = '+b);
-        simonSays(game.slice(0, turn));
-        return;
+};
+
+var player = {
+    name: 'player',
+    step: 0,
+    total: 0,
+    getInput: function () {
+        // Remove clickability
+        $('.orb').removeClass('no-click');
+        player.step = 0;
+        player.total = game.values.length;
+    },
+    checkInput: function (input) {
+        if (input == game.values[player.step]) {
+            player.step++;
+            if (player.step >= player.total) {
+                game.setState(player);
+                console.log('Good human.');
+            }
+        }
+        else {
+            game.lose();
+        }
     }
-    if ((a === b) && (click === game.slice(0, turn).length)) {
-        console.log('Good human.', 'input = '+a, 'simon = '+b);
-        console.log('That all.');
-        click = 0;
-        simonSays(game.slice(0, turn + 1));
-        takeInput(click);
+};
+
+/* var mode = {
+    normal: function () {
+        // normal mode
+    },
+    strict: function() {
+        $('.wrapper').addClass('strict');
+    },
+    nuke: function () {
+        console.log('Kill with fire!');
+        // jQuery, css stuff
+        // show option to game.start()
+    },
+}
+ */
+var game = {
+    state: simon,
+    values: [],
+    mode: 'normal',
+    stage: 0,
+    reset: function () {
+        game.stage = 0;
+        game.state = simon;
+        game.values = [];
+        // show game stage
+    },
+    start: function () {
+        console.log('Let us begin.');
+        game.reset();
+        $('.orb').addClass('no-click');
+        simon.simonSays();
+        simon.playSimon();
+    },
+    nuke: function () {
+        console.log('Kill with fire!');
+        $('#floor').addClass('quake');
+        setTimeout(() => {
+            $('#floor').removeClass('quake');
+            $('.wrapper').addClass('nuke-flash');
+        }, 2000);
+        setTimeout(() => {
+            $('.wrapper').removeClass('nuke-flash');
+            $('.wrapper').removeClass('strict');
+            $('#floor').addClass('empty');
+        }, 2750);
+        // jQuery, css stuff
+        // show option to game.start()
+    },
+    setState: function (state) {
+        if (state.name == 'simon') {
+            game.state = player;
+            player.getInput();
+        }
+        else {
+            game.state = simon;
+            $('.orb').addClass('no-click');
+            if (game.stage >= 20) {
+                game.win(); //win?
+            }
+            else {
+                simon.simonSays();
+                setTimeout(simon.playSimon, 500);
+            }
+        }
+        console.log('game state: ' + game.state.name);
+    },
+    lose: function () {
+        if (game.mode == 'strict') {
+            game.nuke();
+        }
+        else {
+            game.state = simon;
+            console.log('Bad human.');
+            $('.orb').addClass('no-click');
+            setTimeout(simon.playSimon, 500);
+        }
+    },
+    win: function () {
+        // jQuery, css stuff
+        // show option to game.start()
     }
-    if (a === b) {
-        //takeInput(step + 1);
-        return;
-    }
-}
-
-// Receive player input
-function takeInput(step) {
-    turn++;
-    console.log('add handler');
-    // Add click handler...
-    $('.orb').click(function (event) {
-        click++;
-        // When clicked...
-        var input = parseInt($(this).attr('value'));
-        console.log('input = ' + input);
-
-        // Drive game
-        compare(input, game[step]);
-        takeInput(step + 1);
-
-    })
-}
-
-// 👍
-
-function play(turn) {
-    simonSays(game.slice(0, turn + 1));
-    takeInput(0);
-}
+};
 
 // Page loaded
 $(document).ready(function () {
-    console.log('Want to play a game?');
+    Object.keys(sounds).forEach(key => {
+        console.log('loaded sound: ' + key);
+        sounds[key].load();
+    });
 
-    makeGame();
-    play(click);
+    $('.orb').click(function (event) {
+        var orb = parseInt($(this).attr('value'));
+        console.log('input = ' + orb);
+        switch (orb) {
+            case 1: sounds.red.play(); break;
+            case 2: sounds.green.play(); break;
+            case 3: sounds.yellow.play(); break;
+            case 4: sounds.blue.play(); break;
+        }
+        if (game.state == player) {
+            player.checkInput(orb);
+        }
+    });
 
+    $('#start').click(function () {
+        game.start();
+    });
+
+    $('#mode').click(function () {
+        if (game.mode == 'normal') {
+            game.mode = 'strict';
+            $('#mode').html('Strict Mode');
+            $('.wrapper').addClass('strict-flash');
+            setTimeout(() => {
+                $('.wrapper').removeClass('strict-flash');
+                $('.wrapper').addClass('strict');
+            }, 35);
+            console.log('mode: ' + game.mode);
+            // Show mode
+        }
+        else {
+            game.mode = 'normal';
+            // Show mode
+            $('#mode').html('Normal Mode');
+            $('.wrapper').removeClass('strict', 1000, 'linear'); // no transition?
+            console.log('mode: ' + game.mode);
+        }
+    });
 });

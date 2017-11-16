@@ -2,45 +2,49 @@
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="chrome=1">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="noopener">
-<meta name="description" content="Simon" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="noopener">
+    <meta name="description" content="Simon" />
 
-<title>Simon</title>
+    <title>Simon</title>
 
-<!-- google fonts -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=">
+    <!-- google fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
 
-<!-- CSS -->
-<link rel="stylesheet" href="assets/css/style.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
 
-<!-- icon -->
-<link id="favicon" rel="shortcut icon" href="/img/">
+    <!-- icon -->
+    <link id="favicon" rel="shortcut icon" href="/img/">
 
-<!-- jQuery -->
-<script
-src="https://code.jquery.com/jquery-3.2.1.min.js"
-integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script type="text/javascript" src="assets/js/game.js"></script>
+    <script type="text/javascript" src="assets/js/game.js"></script>
 
 </head>
+
 <body>
     <div class="wrapper">
         <div class=""></div>
         <div id="floor">
-            <div class="orb" id="orb1" value="1"></div>
-            <div class="orb" id="orb2" value="2"></div>
-            <div class="orb" id="orb3" value="3"></div>
-            <div class="orb" id="orb4" value="4"></div>
+            <div class="orb red" id="orb1" value="1"></div>
+            <div class="orb green" id="orb2" value="2"></div>
+            <div class="orb yellow" id="orb3" value="3"></div>
+            <div class="orb blue" id="orb4" value="4"></div>
         </div>
         <div class="messages">
             <div id="message">Simon: Hello there.</div>
+            <div class="controls">
+                <button id="start">Start</button>
+                <button id="mode">Normal Mode</button>
+            </div>
         </div>
     </div>
 </body>

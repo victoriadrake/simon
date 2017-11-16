@@ -16,7 +16,7 @@
 
     background: $orb_base_color
     border-radius: 50%
-    box-shadow: inset -5px -10px 1px darken($orb_base_color, 5%)
+    box-shadow: inset -5px -8px 1px darken($orb_base_color, 5%), inset 10px 10px 1px lighten($orb_base_color, 5%)
     height: $size
     text-align: center
     width: $size
@@ -35,3 +35,6 @@
         bottom: -$size - 40px
         width: ($size) / 1.5
         transition: 1s ease
+
+=flash($color)
+    background-color: $color
