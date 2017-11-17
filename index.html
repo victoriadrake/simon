@@ -30,10 +30,10 @@
 </head>
 
 <body>
-    <div class="replay hide">Replay</div>
+    <button id="replay">Replay</button>
     <div class="wrapper">
         <div class=""></div>
-        <div id="floor">
+        <div id="floor" class="empty">
             <div class="orb red" id="orb1" value="1"></div>
             <div class="orb green" id="orb2" value="2"></div>
             <div class="orb yellow" id="orb3" value="3"></div>
@@ -41,10 +41,11 @@
         </div>
         <div class="messages">
             <div id="message">Simon: Greetings, traveler.</div>
+            <button id="next">Next</button>
             <div class="controls">
                 <button id="start">Start</button>
                 <button class="stage">Stage:
-                    <span id="stage"></span>
+                    <span id="stage">0</span>
                 </button>
                 <button id="mode">Normal Mode</button>
             </div>
