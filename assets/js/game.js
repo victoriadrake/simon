@@ -1,11 +1,3 @@
-/*
-SIMON
-nuke:
-- rumble effect
-- emanating glow to white screen
-- "Oh no..."
-*/
-
 var sounds = {
     red: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3'),
     green: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3'),
@@ -30,9 +22,8 @@ var simonPrompt = {
 
 function intro() {
     let i = 1;
-    $('#message').html(msg[0]); // click to advance
+    $('#message').html(msg[0]);
     $('#next').click(function () {
-        console.log(msg[i]);
         if (i < 5) {
             $('#message').html(msg[i++]);
             $('#floor').removeClass('empty');
@@ -46,7 +37,6 @@ function intro() {
 
 function noticeMe(orb) {
     $('#orb' + orb).addClass('notice');
-    console.log('notice!');
     switch (orb) {
         case 1: sounds.red.play(); break;
         case 2: sounds.green.play(); break;
@@ -55,20 +45,19 @@ function noticeMe(orb) {
     }
     setTimeout(() => {
         $('#orb' + orb).removeClass('notice');
-    }, 400);
+    }, 350);
 }
 
 var simon = {
     name: 'simon',
     simonSays: function () {
         game.values.push(Math.ceil(Math.random() * 4));
-        console.log('game: ' + game.values);
         game.stage++;
+        console.log('game: ' + game.values, 'stage: '+game.stage);
         $('#stage').html(game.stage);
     },
     playSimon: function () { // could add no-click here?
         var m = Math.ceil(Math.random() * (Object.keys(simonPrompt).length - 1));
-        console.log(simonPrompt[m]);
         $('#message').html(simonPrompt[m]);
         var v = 0;
         var t = setInterval(function () {
@@ -89,7 +78,6 @@ var player = {
     step: 0,
     total: 0,
     getInput: function () {
-        // Remove clickability
         $('.orb').removeClass('no-click');
         player.step = 0;
         player.total = game.values.length;
@@ -99,8 +87,7 @@ var player = {
             player.step++;
             if (player.step >= player.total) {
                 game.setState(player);
-                console.log('Good human.');
-                //$('#message').html('Simon: Good.');
+                console.log('Good human. Like watching a dog play piano.');
             }
         }
         else {
@@ -125,7 +112,7 @@ var setMode = {
         }, 35);
     },
     nuke: function () {
-        console.log('Kill with fire!');
+        console.log('So much for the dream...');
         $('#floor').addClass('quake');
         setTimeout(() => {
             $('#floor').removeClass('quake');
@@ -141,8 +128,6 @@ var setMode = {
         setTimeout(() => {
             $('#replay').css('display', 'block');
         }, 4000);
-        // jQuery, css stuff
-        // show option to game.start()
     },
 }
 
@@ -181,15 +166,14 @@ var game = {
         else {
             game.state = simon;
             $('.orb').addClass('no-click');
-            if (game.stage >= 5) {
-                game.win(); //win?
+            if (game.stage >= 20) {
+                game.win();
             }
             else {
                 simon.simonSays();
                 setTimeout(simon.playSimon, 500);
             }
         }
-        console.log('game state: ' + game.state.name);
     },
     lose: function () {
         if (game.mode == 'strict') {
@@ -198,7 +182,7 @@ var game = {
         }
         else {
             game.state = simon;
-            console.log('Bad human.');
+            console.log('Bad human. Mother would be so displeased.');
             $('#message').html('Simon: Try again.');
             $('.orb').addClass('no-click');
             $('#floor').addClass('quake');
@@ -209,9 +193,9 @@ var game = {
         }
     },
     win: function () {
+        console.log('Well, I guess I\'m on my own again... for the next few thousand years or so... Hey, send a postcard, okay?')
         $('#message').html('Simon: Well done, brave human. Safe passage is yours.');
-        //all flash
-        $('.wrapper').addClass('happy-time'); // transition?
+        $('.wrapper').addClass('happy-time');
         $('.controls').addClass('dim');
         let orbs = [3,4,4,3,4,2,1];
         let v = 0;
@@ -228,9 +212,7 @@ var game = {
             $('.wrapper').removeClass('happy-time');
             $('#floor').addClass('empty');
             $('#replay').css('display', 'block');
-        }, 5300)
-        // jQuery, css stuff
-        // show option to game.start()
+        }, 5300);
     }
 };
 
@@ -244,7 +226,6 @@ $(document).ready(function () {
 
     $('.orb').click(function (event) {
         var orb = parseInt($(this).attr('value'));
-        console.log('input = ' + orb);
         switch (orb) {
             case 1: sounds.red.play(); break;
             case 2: sounds.green.play(); break;
@@ -268,11 +249,9 @@ $(document).ready(function () {
     $('#mode').click(function () {
         if (game.mode == 'normal') {
             setMode.strict();
-            console.log('mode: ' + game.mode);
         }
         else {
             setMode.normal();
-            console.log('mode: ' + game.mode);
         }
     });
 });
