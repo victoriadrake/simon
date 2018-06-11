@@ -1,20 +1,23 @@
 {
-    "name": "simon",
-    "version": "1.0.0",
-    "description": "simon",
-    "main": "gulpfile.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "Vicky Lai",
-    "license": "ISC",
-    "devDependencies": {
-      "critical": "^0.9.1",
-      "gulp": "^3.9.1",
-      "gulp-autoprefixer": "^4.0.0",
-      "gulp-pug": "^3.3.0",
-      "gulp-sass": "^3.1.0",
-      "gulp-util": "^3.0.8"
-    }
+  "homepage": "https://github.com/vickylai/simon",
+  "bugs": "https://github.com/vickylai/simon/issues",
+  "scripts": {
+    "build:sass": "node-sass --output-style compressed -o static/css sass/",
+    "autoprefixer": "postcss static/css/*.css --use autoprefixer -d static/css",
+    "watch": "chokidar 'sass/*.sass' -c 'npm run build:sass && npm run autoprefixer'"
+  },
+  "author": {
+    "name": "Vicky Lai",
+    "url": "https://vickylai.com"
+  },
+  "repository": "github:vickylai/simon",
+  "license": "GPL-3.0-or-later",
+  "devDependencies": {
+    "autoprefixer": "^8.5.1",
+    "chokidar-cli": "^1.2.0",
+    "node-sass": "^4.9.0",
+    "postcss": "^6.0.22",
+    "postcss-cli": "^5.0.0",
+    "pug-cli": "^1.0.0-alpha6"
   }
-  
+}
